@@ -107,11 +107,20 @@ pub struct ListRendererReq {
     page_num: usize,
 }
 
+#[derive(Debug, Deserialize, Serialize)]
+pub struct ListAns<T> {
+    items: Option<T>,
+    total: usize,
+}
+
 #[tauri::command]
-fn handle_list_renderer(req: ListRendererReq) -> Resp<Vec<renderer::Renderer>> {
-    let resp = renderer::all(&req);
+fn handle_list_renderer(req: ListRendererReq) -> Resp<ListAns<Vec<renderer::Renderer>>> {
+    let resp = renderer::all(&req).unwrap();
     Resp {
-        data: Some(resp.unwrap()),
+        data: Some(ListAns {
+            items: Some(resp.0),
+            total: resp.1,
+        }),
         message: "success".to_string(),
         code: 200,
     }

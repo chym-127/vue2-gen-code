@@ -3,7 +3,7 @@
     <div style="margin-bottom: 12px">
       <a-button type="primary" @click="openDrawer(resetFormState)">新建渲染器</a-button>
     </div>
-    <a-table :columns="columns" :data-source="data">
+    <a-table :columns="columns" :data-source="data" :scroll="{y:500}" :pagination="pagination" @change="tableChange">
       <template #bodyCell="{ column, text, record }: any">
         <template v-if="column.dataIndex === 'name'">
           <span>{{ text }}</span>
@@ -28,7 +28,7 @@
     </a-table>
 
     <a-drawer
-      width="60vw"
+      :width="600"
       :title="formState.id ? '编辑' : '创建'"
       :placement="placement"
       :visible="visible"
@@ -85,6 +85,11 @@ import { Modal } from 'ant-design-vue';
 const data = reactive([]);
 const visible = ref(false);
 const placement = ref('right');
+const pagination = reactive({
+  current: 1,
+  pageSize: 10,
+  total: 0,
+});
 
 const formRef = ref<FormInstance>();
 const formState = reactive<any>({
@@ -133,8 +138,8 @@ const rules: Record<string, Rule[]> = {
   name: [{ required: true, message: '', trigger: 'change' }],
 };
 const layout = {
-  labelCol: { span: 2 },
-  wrapperCol: { span: 21 },
+  labelCol: { span: 4 },
+  wrapperCol: { span: 20 },
 };
 const columns = [
   {
@@ -179,18 +184,24 @@ function handleCreateOrUpdate(data: any) {
   }
 }
 
+function tableChange(page: any) {
+  Object.assign(pagination,page)
+  handleListRenderer()
+}
+
 function handleListRenderer() {
   invoke('handle_list_renderer', {
     req: {
-      page_size: 10,
-      page_num: 1,
+      page_size: pagination.pageSize,
+      page_num: pagination.current,
     },
   }).then((resp: any) => {
-    resp.data.forEach((item: any) => {
+    resp.data.items.forEach((item: any) => {
       item.fields = item.content ? JSON.parse(item.content) : null;
     });
+    pagination.total = resp.data.total;
     data.splice(0);
-    Object.assign(data, resp.data);
+    Object.assign(data, resp.data.items);
   });
 }
 
@@ -204,7 +215,7 @@ function handleDel(row: any) {
       invoke('handle_del_renderer', {
         id: row.id,
       }).then((resp: any) => {
-        console.log("删除成功");
+        console.log('删除成功');
         init();
       });
     },

@@ -28,7 +28,7 @@
     </a-table>
 
     <a-drawer
-      width="60vw"
+      :width="600"
       :title="formState.id ? '编辑' : '创建'"
       :placement="placement"
       :visible="visible"
@@ -102,8 +102,8 @@ const rules: Record<string, Rule[]> = {
   content: [{ required: true, message: '', trigger: 'change' }],
 };
 const layout = {
-  labelCol: { span: 2 },
-  wrapperCol: { span: 22 },
+  labelCol: { span: 4 },
+  wrapperCol: { span: 20 },
 };
 const columns = [
   {
@@ -165,7 +165,7 @@ function handleDel(row: any) {
       invoke('handle_del_teamlate', {
         id: row.id,
       }).then((resp: any) => {
-        console.log("删除成功");
+        console.log('删除成功');
         init();
       });
     },
@@ -182,7 +182,7 @@ function handleListTeamlate() {
     resp.data.forEach((item: any) => {
       item.options = JSON.parse(item.attributes);
     });
-    data.splice(0)
+    data.splice(0);
     Object.assign(data, resp.data);
   });
 }

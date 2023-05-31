@@ -1,14 +1,14 @@
 <template>
   <div class="container">
     <a-tabs v-model:activeKey="activeKey" @change="tabChange">
+      <a-tab-pane :key="3" tab="生成代码" force-render>
+        <Output ref="OutputRef"></Output>
+      </a-tab-pane>
       <a-tab-pane :key="1" tab="文件模板管理">
         <Template ref="TemplateRef"></Template>
       </a-tab-pane>
       <a-tab-pane :key="2" tab="渲染器管理" force-render>
         <Renderer ref="RendererRef"></Renderer>
-      </a-tab-pane>
-      <a-tab-pane :key="3" tab="生成代码" force-render>
-        <Output ref="OutputRef"></Output>
       </a-tab-pane>
     </a-tabs>
   </div>

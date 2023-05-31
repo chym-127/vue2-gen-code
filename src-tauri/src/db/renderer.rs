@@ -13,14 +13,14 @@ pub struct Renderer {
     pub content: Option<String>,
 }
 
-pub fn all(p: &super::super::ListRendererReq) -> Result<Vec<Renderer>, Error> {
+pub fn all(p: &super::super::ListRendererReq) -> Result<(Vec<Renderer>, usize), Error> {
     let mut resp: Vec<Renderer> = Vec::new();
     let conn = get_conn();
     let mut stmt = conn.prepare(
         "SELECT id, name, teamlate_id,content,additional FROM renderer LIMIT ?1 OFFSET ?2",
     )?;
     // let person_iter = stmt.unwrap().query([]);
-    let person_iter = stmt.query_map(params![p.page_size, p.page_num - 1], |row| {
+    let person_iter = stmt.query_map(params![p.page_size, (p.page_num - 1)*p.page_size], |row| {
         Ok(Renderer {
             id: row.get(0)?,
             name: row.get(1)?,
@@ -34,7 +34,11 @@ pub fn all(p: &super::super::ListRendererReq) -> Result<Vec<Renderer>, Error> {
         resp.push(person?);
     }
 
-    Ok(resp)
+    stmt = conn.prepare("SELECT COUNT(*) FROM renderer")?;
+
+    let total = stmt.query_row([], |row| Ok(super::Total(row.get(0)?)))?;
+
+    Ok((resp, total.0))
 }
 
 pub fn create(t: &Renderer) -> Result<(), Error> {

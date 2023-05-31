@@ -20,7 +20,7 @@
         <a-button type="primary" style="margin-left: 8px" @click="openDrawer(resetFormState)">新建字段</a-button>
       </div>
     </div>
-    <a-table :columns="columns" :data-source="tebleList" :pagination="false">
+    <a-table :columns="columns" :data-source="tebleList" :scroll="{y:500}" :pagination="false">
       <template #bodyCell="{ column, text, record }: any">
         <template v-if="column.dataIndex === 'name'">
           <span>{{ text }}</span>
@@ -301,10 +301,10 @@ function handleListRenderer() {
       page_num: 1,
     },
   }).then((resp: any) => {
-    resp.data.forEach((item: any) => {
+    resp.data.items.forEach((item: any) => {
       item.fields = JSON.parse(item.content);
     });
-    Object.assign(rendererList, resp.data);
+    Object.assign(rendererList, resp.data.items);
     rendererList.forEach((renderer) => {
       let renders: { [key: string]: any } = {};
       renderer.fields.forEach((item: any) => {

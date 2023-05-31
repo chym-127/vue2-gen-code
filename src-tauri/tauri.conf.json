@@ -39,10 +39,10 @@
     "windows": [
       {
         "fullscreen": false,
-        "resizable": true,
+        "resizable": false,
         "title": "代码生成器",
-        "width": 800,
-        "height": 600
+        "width": 1000,
+        "height": 750
       }
     ]
   }
