@@ -15,6 +15,7 @@ function genCode(teamplate: any, fields: Field[], rendererMapper: any) {
   let methodsArr: any[] = [];
   let cssArr: any[] = [];
   let htmls: { [key: string]: any } = {};
+
   teamplate.options.forEach((option: any) => {
     let field_name = `_${option.value}_fields`;
     htmls[option.value] = [];
@@ -62,7 +63,8 @@ function genCode(teamplate: any, fields: Field[], rendererMapper: any) {
     if (dataStr) {
       dataArr.push(dataStr + ',');
     }
-    if (methodsArr) {
+
+    if (methodsStr) {
       methodsArr.push(methodsStr + ',');
     }
     if (cssStr) {
@@ -78,10 +80,10 @@ function genCode(teamplate: any, fields: Field[], rendererMapper: any) {
       htmls: htmls,
     });
   } catch (error) {
+    console.log(error);
     message.error('操作失败');
   }
-
-  console.log(html);
+  return html;
 }
 
 export { genCode };

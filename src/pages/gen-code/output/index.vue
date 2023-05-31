@@ -20,7 +20,7 @@
         <a-button type="primary" style="margin-left: 8px" @click="openDrawer(resetFormState)">新建字段</a-button>
       </div>
     </div>
-    <a-table :columns="columns" :data-source="tebleList" :scroll="{y:500}" :pagination="false">
+    <a-table :columns="columns" :data-source="tebleList" :scroll="{ y: 500 }" :pagination="false">
       <template #bodyCell="{ column, text, record }: any">
         <template v-if="column.dataIndex === 'name'">
           <span>{{ text }}</span>
@@ -38,9 +38,13 @@
       </template>
     </a-table>
 
-    <div class="flex-row" style="justify-content: flex-end;margin-top: 10px;">
+    <div class="flex-row" style="justify-content: flex-end; margin-top: 10px">
       <a-button type="primary" @click="outputCode">生成代码</a-button>
     </div>
+
+    <a-modal v-model:visible="visibleOutput" title="预览">
+      <a-textarea :rows="20" v-model:value="code" placeholder=""></a-textarea>
+    </a-modal>
 
     <a-drawer
       :width="600"
@@ -111,7 +115,9 @@ import { Modal } from 'ant-design-vue';
 import { genCode } from '.';
 const tebleList = reactive<any>([]);
 const visible = ref(false);
+const visibleOutput = ref(false);
 const placement = ref('right');
+const code = ref('');
 const templateId = ref();
 const formRef = ref<FormInstance>();
 const formState = reactive<any>({
@@ -336,7 +342,10 @@ function templateChange(val: any, option: any) {
 }
 
 function outputCode() {
-  genCode(currentTemp, tebleList, rendererMapper);
+  code.value = genCode(currentTemp, tebleList, rendererMapper);
+  if (code.value) {
+    visibleOutput.value = true;
+  }
 }
 
 function init() {

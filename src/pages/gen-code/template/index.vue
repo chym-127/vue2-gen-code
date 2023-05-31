@@ -1,7 +1,7 @@
 <template>
   <div>
     <div style="margin-bottom: 12px">
-      <a-button type="primary" @click="openDrawer(resetFormState)">新建</a-button>
+      <a-button type="primary" @click="openDrawer(resetFormState)">新建文件模板</a-button>
     </div>
     <a-table :columns="columns" :data-source="data">
       <template #bodyCell="{ column, text, record }: any">
