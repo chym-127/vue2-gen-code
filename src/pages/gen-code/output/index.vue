@@ -99,7 +99,14 @@
           </a-select>
         </a-form-item>
         <a-form-item label="拓展属性">
-          <a-textarea :rows="8" v-model:value="formState.expand" placeholder="请输入内容" />
+          <JsonFormat
+            :content="formState.expand"
+            @output="(value:String)=>{
+            formState.expand = value
+          }"
+          >
+            <a-textarea :rows="8" v-model:value="formState.expand" placeholder="请输入内容" />
+          </JsonFormat>
         </a-form-item>
       </a-form>
     </a-drawer>

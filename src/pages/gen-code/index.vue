@@ -4,7 +4,7 @@
       <a-tab-pane :key="1" tab="生成代码" force-render>
         <Output ref="OutputRef"></Output>
       </a-tab-pane>
-      <a-tab-pane :key="2" tab="文件模板管理">
+      <a-tab-pane :key="2" tab="文件模板管理"  force-render>
         <Template ref="TemplateRef"></Template>
       </a-tab-pane>
       <a-tab-pane :key="3" tab="渲染器管理" force-render>

@@ -3,7 +3,7 @@
     <div style="margin-bottom: 12px">
       <a-button type="primary" @click="openDrawer(resetFormState)">新建渲染器</a-button>
     </div>
-    <a-table :columns="columns" :data-source="data" :scroll="{y:500}" :pagination="pagination" @change="tableChange">
+    <a-table :columns="columns" :data-source="data" :scroll="{ y: 500 }" :pagination="pagination" @change="tableChange">
       <template #bodyCell="{ column, text, record }: any">
         <template v-if="column.dataIndex === 'name'">
           <span>{{ text }}</span>
@@ -56,7 +56,11 @@
           </a-select>
         </a-form-item>
         <a-form-item label="额外属性">
-          <a-textarea :rows="8" v-model:value="formState.additional" placeholder="请输入额外属性" />
+          <JsonFormat :content="formState.additional" @output="(value:String)=>{
+            formState.additional = value
+          }">
+            <a-textarea id="json-edit" :rows="8" v-model:value="formState.additional" placeholder="请输入额外属性" />
+          </JsonFormat>
         </a-form-item>
         <a-form-item label="内容">
           <div style="background-color: #f9f9f9; padding: 12px 24px">
@@ -81,9 +85,9 @@ import type { Rule } from 'ant-design-vue/es/form';
 import type { FormInstance } from 'ant-design-vue';
 import { holdResponse } from '../../../utils/index';
 import { Modal } from 'ant-design-vue';
-
 const data = reactive([]);
 const visible = ref(false);
+
 const placement = ref('right');
 const pagination = reactive({
   current: 1,
@@ -185,8 +189,8 @@ function handleCreateOrUpdate(data: any) {
 }
 
 function tableChange(page: any) {
-  Object.assign(pagination,page)
-  handleListRenderer()
+  Object.assign(pagination, page);
+  handleListRenderer();
 }
 
 function handleListRenderer() {
