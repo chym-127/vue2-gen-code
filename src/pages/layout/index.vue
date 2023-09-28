@@ -1,9 +1,9 @@
 <template>
   <div class="full">
     <a-layout class="full">
-      <a-layout-sider>
+      <!-- <a-layout-sider>
         <Menu></Menu>
-      </a-layout-sider>
+      </a-layout-sider> -->
       <a-layout>
         <!-- <a-layout-header></a-layout-header> -->
         <a-layout-content class="bg-w">

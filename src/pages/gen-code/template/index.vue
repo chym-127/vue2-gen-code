@@ -28,7 +28,7 @@
     </a-table>
 
     <a-drawer
-      :width="600"
+      :width="800"
       :title="formState.id ? '编辑' : '创建'"
       :placement="placement"
       :visible="visible"

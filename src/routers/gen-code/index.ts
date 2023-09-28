@@ -4,7 +4,7 @@ const GenCode = () => import('../../pages/gen-code/index.vue');
 
 const routes: RouteRecordRaw[] = [
   {
-    path: '/gen-code',
+    path: '/',
     name: '代码生成器',
     component: GenCode,
     meta: {},
